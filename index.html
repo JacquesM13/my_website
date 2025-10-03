@@ -6,6 +6,18 @@
     <title>Web Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        html, body {
+          height: 100%;
+        }
+        body {
+          display: flex;
+          flex-direction: column;
+        }
+        main {
+          flex: 1; /* pushes footer down */
+        }
+    </style>
 </head>
 
 <body>
@@ -14,31 +26,35 @@
     <header class="p-3 mb-3 border-bottom">
         <div class="container d-flex flex-wrap align-items-center">
             <h3 class="me-auto"><a href="/" class="nav-link link-body-emphasis ">Jacques Massey</a></h3>
-            <a href="./blog/" class="nav-link px-3 link-body-emphasis fs-5">Blog</a>
-            <a href="./projects/" class="nav-link px-3 link-body-emphasis fs-5">Projects</a>
-            <a href="./education/" class="nav-link px-3 link-body-emphasis fs-5">Education</a>
+            <a href="/blog/" class="nav-link px-3 link-body-emphasis fs-5">Blog(ish)</a>
+            <a href="/projects/" class="nav-link px-3 link-body-emphasis fs-5">Projects</a>
+            <a href="/education/" class="nav-link px-3 link-body-emphasis fs-5">Education</a>
         </div>
     </header>
 </div>
 
-<div class="container">
-    <div class="px-4 pt-2 mt-4 text-center border-bottom">
-        <h1 class="display-5 fw-bold text-body-emphasis pb-2">Coder, Cyclist, Collector</h1>
-        <div class="col-lg-7 mx-auto">
-            <p class="lead mb-3">Ambitious and passionate developer, as well as a keen cyclist, and an avid learner of
-                all
-                things. My interests are perhaps too many to list here.</p>
-        </div>
-        <div class="overflow-hidden" style="max-height: 60vh;">
-            <div class="container px-5"><img src="./images/CoverCropped.png" class="img-fluid border rounded-4 shadow-lg mb-5"
-                                             alt="Example image" width="700" height="200" loading="lazy">
+<main class="container">
+    <div class="container">
+        <div class="px-4 pt-2 mt-4 text-center border-bottom">
+            <h1 class="display-5 fw-bold text-body-emphasis pb-2">Coder, Cyclist, Collector</h1>
+            <div class="col-lg-7 mx-auto">
+                <p class="lead mb-3">Ambitious and passionate developer, as well as a keen cyclist, and an avid learner
+                    of
+                    all
+                    things. My interests are perhaps too many to list here.</p>
+            </div>
+            <div class="overflow-hidden" style="max-height: 60vh;">
+                <div class="container px-5"><img src="/images/CoverCropped.png"
+                                                 class="img-fluid border rounded-4 shadow-lg mb-5"
+                                                 alt="Example image" width="700" height="200" loading="lazy">
+                </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2 mt-auto">
         <div class="col-md-4 d-flex align-items-center">
             <span class="mb-3 mb-md-0 text-body-secondary">© Jacques Massey 2025</span>
         </div>
