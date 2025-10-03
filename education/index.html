@@ -6,6 +6,18 @@
     <title>Web Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        html, body {
+          height: 100%;
+        }
+        body {
+          display: flex;
+          flex-direction: column;
+        }
+        main {
+          flex: 1; /* pushes footer down */
+        }
+    </style>
 </head>
 
 <body>
@@ -14,7 +26,7 @@
     <header class="p-3 mb-3 border-bottom">
         <div class="container d-flex flex-wrap align-items-center">
             <h3 class="me-auto"><a href="/" class="nav-link link-body-emphasis ">Jacques Massey</a></h3>
-            <a href="/blog/" class="nav-link px-3 link-body-emphasis fs-5">Blog</a>
+            <a href="/blog/" class="nav-link px-3 link-body-emphasis fs-5">Blog(ish)</a>
             <a href="/projects/" class="nav-link px-3 link-body-emphasis fs-5">Projects</a>
             <a href="/education/" class="nav-link px-3 link-body-emphasis fs-5">Education</a>
         </div>
@@ -22,36 +34,61 @@
 </div>
 
 
-<!-- University of Leeds -->
-<div class="container my-5">
-    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
-        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3"><h1 class="display-4 fw-bold lh-1 text-body-emphasis">The University of
-            Leeds</h1>
-            <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most
-                popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system,
-                extensive prebuilt components, and powerful JavaScript plugins.</p>
-        </div>
-        <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden "><img class="rounded-top-3"
-                                                                             src="./images/RogerStevens.png" alt=""
-                                                                             width="500">
+<main class="container">
+    <!-- University of Leeds -->
+    <div class="container my-5">
+        <div class="row p-4 align-items-center rounded-3 border shadow-lg overflow-hidden">
+
+            <!-- Text -->
+            <div class="col-lg-7 px-4 py-3">
+                <h1 class="display-6 fw-bold lh-1 text-body-emphasis">The University of Leeds</h1>
+                <p class="lead mb-3">
+                    I studied Physics (BSc, 1st Class Hons) and Electronic & Electrical Engineering (MSc, Distinction)
+                    at
+                    the University of Leeds, where
+                    I was drawn to subjects that connected theory with real-world impact. I especially enjoyed medical
+                    physics, quantum physics, and programming — from building embedded systems in C++ to training Python
+                    machine learning models to detect cancer cells in microscopy images.
+                </p>
+            </div>
+
+            <!-- Image -->
+            <div class="col-lg-5 p-0 d-flex flex-column justify-content-end align-self-stretch">
+                <img class="img-fluid rounded-3" src="/images/RogerStevens.png" alt="" style="max-width:500px;">
+            </div>
+
         </div>
     </div>
-</div>
 
+    <!-- London App Brewery -->
+    <div class="container my-5">
+        <div class="row p-4 align-items-center rounded-3 border shadow-lg overflow-hidden">
 
-<!-- London App Brewery -->
-<div class="px-4 py-5 my-5 text-center"><img class="d-block mx-auto mb-4"
-                                             src="./images/LondonAppBrewery.png" alt="" width="100"
-                                             height="100">
-    <h1 class="display-5 fw-bold text-body-emphasis">London App Brewery</h1>
-    <div class="col-lg-6 mx-auto"><p class="lead mb-4">Master Python by building 100 projects in 100 days. Learn data
-        science, automation, build websites, games and apps!</p>
+            <!-- Image -->
+            <div class="col-lg-4 d-flex flex-column align-items-center order-lg-1">
+                <img class="img-fluid" src="/images/LondonAppBrewery.png" alt="" style="max-width:220px;">
+            </div>
+
+            <!-- Text -->
+            <div class="col-lg-8 px-4 py-3 order-lg-2">
+                <h1 class="display-6 fw-bold lh-1 text-body-emphasis">London App Brewery</h1>
+                <p class="lead mb-3">
+                    The London App Brewery’s *Complete Python Pro Bootcamp* has been one of the most fun and rewarding
+                    learning experiences I’ve had. Starting from the basics, I worked my way through the 100-day
+                    challenge
+                    and built projects that I’m genuinely excited about. I loved creating GUIs for games like Snake,
+                    automating tasks with Selenium, and bringing websites to life with Flask, Bootstrap, Jinja, and SQL
+                    databases. I even dove into data science, using linear regression to predict housing prices based on
+                    weighted variables.
+                </p>
+            </div>
+
+        </div>
     </div>
-</div>
-
+</main>
 
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2 mt-auto">
         <div class="col-md-4 d-flex align-items-center">
             <span class="mb-3 mb-md-0 text-body-secondary">© Jacques Massey 2025</span>
         </div>
