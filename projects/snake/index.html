@@ -41,15 +41,6 @@
 <main class="container">
     <div class="px-4 pt-2 my-4 text-center">
         <h1 class="display-4 fw-bold text-body-emphasis">Snake</h1>
-        <!--        <div class="col-lg-6 mx-auto"><p class="lead mb-4">The classic arcade game, brought to life with the Python's-->
-        <!--            <i>Turtle</i> library.</p>-->
-        <!--        </div>-->
-        <!--        <div class="overflow-hidden" style="max-height: 40vh;">-->
-        <!--            <div class="container px-5">-->
-        <!--                <img src="/images/SnakeGame.png" class="img-fluid border rounded-3 mb-4"-->
-        <!--                     alt="Example image" width="320" height="320" loading="lazy">-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 
     <div class="row g-5">
@@ -57,8 +48,91 @@
             <article class="blog-post"><h2 class="display-5 link-body-emphasis mb-1">The Classic Arcade Game</h2>
                 <p>Using Python's <i>Turtle</i> library to make the classic video game.</p>
                 <hr>
+                <h2>Rules</h2>
+                <p>The aim of the game is to move the snake around the map, eating as much food as possible to grow the
+                    snake longer. Collisions with the boundary or between the head of the snake and its body cause the
+                    game to end.</p>
+                <br>
                 <h2>Turtle</h2>
-                <p>Text about the Turtle Library.</p>
+                <p>In order to generate the snake, food, and 'score' texts, Python's Turtle library is used. The library
+                    describes the position of a 'turtle' carrying a pen, whose movement around the screen draws lines,
+                    text, and shapes.</p>
+                <p>By providing the turtle with:</p>
+                <ul>
+                    <li>Starting position</li>
+                    <li>Movement speed</li>
+                    <li>Angles through which to turn for 'left', 'right', 'up', 'down'</li>
+                </ul>
+                <p>The classic arcade game comes to life. Classes were used to describe the behaviour of the snake, the
+                    food, and the scoreboard.</p>
+                <hr>
+                <h2>The Code</h2>
+                <br>
+                <h3>The Snake</h3>
+                <p>The snake class functions to initialise the snake with starting positions. It also contains methods
+                    for extending the snake (when food is eaten), moving the snake forwards, and maneuvering the snake
+                    based on keyboard input.</p>
+                <br>
+                <h3>Food</h3>
+                <p>The food class defines the shape of the food, the colour, and the size. It also features a 'refresh'
+                    method for randomly placing new food when some is eaten.</p>
+                <br>
+                <h3>Scoreboard</h3>
+                <p>The scoreboard class initialises a score at the start of each game, displays the highscore, and
+                    increments the current score each time the player eats some food.</p>
+                <br>
+                <h3>main.py</h3>
+                <pre class="bg-body-secondary px-3 rounded-3 overflow-auto">
+                    <code class="d-block">
+from turtle import Screen
+from snake import Snake
+from food import Food
+from scoreboard import Scoreboard
+import time
+
+screen = Screen()
+screen.listen()
+screen.setup(width= 600, height= 600)
+screen.bgcolor("black")
+
+screen.title("Snake")
+screen.tracer(0)
+
+game_is_on = True
+
+snake = Snake()
+food = Food()
+score = Scoreboard()
+
+screen.onkey(snake.left, "Left")
+screen.onkey(snake.right, "Right")
+screen.onkey(snake.up, "Up")
+screen.onkey(snake.down, "Down")
+
+while game_is_on:
+    screen.update()
+    time.sleep(0.06)
+    snake.move()
+
+    # Detect collision of snake with food
+    if snake.head.distance(food) < 15:
+        food.refresh()                          # If collision between snake and food, move food
+        score.increment()                       # Increase and update display for score
+        snake.extend()
+
+    # Detect collision with wall
+    if abs(snake.head.xcor()) > 290 or abs(snake.head.ycor()) > 290:
+        score.reset()
+        snake.reset()
+    # Detect collision with tail - if tail collides with any tail segment
+    for segment in snake.segments[1:]:
+        if snake.head.distance(segment) < 10:
+            score.reset()
+            snake.reset()
+
+screen.exitonclick()
+                    </code>
+                </pre>
             </article>
         </div>
         <div class="col-md-4">
