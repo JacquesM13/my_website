@@ -6,6 +6,11 @@
     <title>Web Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         html, body {
           height: 100%;
@@ -25,11 +30,11 @@
 
 
 <!-- Navbar -->
-<div class="container">
+<div class="container-fluid px-5">
     <header class="p-3 mb-3 border-bottom">
         <div class="container d-flex flex-wrap align-items-center">
             <h3 class="me-auto"><a href="/" class="nav-link link-body-emphasis ">Jacques Massey</a></h3>
-            <a href="/blog/" class="nav-link px-3 link-body-emphasis fs-5">Blog(ish)</a>
+            <a href="/blog" class="nav-link px-3 link-body-emphasis fs-5">Blog(ish)</a>
             <a href="/projects/" class="nav-link px-3 link-body-emphasis fs-5">Projects</a>
             <a href="/education/" class="nav-link px-3 link-body-emphasis fs-5">Education</a>
         </div>
@@ -38,18 +43,9 @@
 
 
 <!-- Content -->
-<main class="container">
+<main class="container-fluid px-5">
     <div class="px-4 pt-2 my-4 text-center">
         <h1 class="display-4 fw-bold text-body-emphasis">Spotify</h1>
-        <!--        <div class="col-lg-6 mx-auto"><p class="lead mb-4">The classic arcade game, brought to life with the Python's-->
-        <!--            <i>Turtle</i> library.</p>-->
-        <!--        </div>-->
-        <!--        <div class="overflow-hidden" style="max-height: 40vh;">-->
-        <!--            <div class="container px-5">-->
-        <!--                <img src="/images/SnakeGame.png" class="img-fluid border rounded-3 mb-4"-->
-        <!--                     alt="Example image" width="320" height="320" loading="lazy">-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 
     <div class="row g-5">
@@ -58,16 +54,277 @@
                 Playlist</h2>
                 <p>Scraping the Billboard website and making Spotify playlists.</p>
                 <hr>
-                <h2>APIs</h2>
-                <p>Text about the APIs.</p>
+                <h2>Functionality</h2>
+                <p>This was a really fun project using APIs and webscraping to create Spotify playlists. The program
+                    asks the user for a date, and uses this date to retrieve Billboard's <i>Hot 100</i> at that
+                    time, before redirecting the user to Spotify where a new playlist is automatically made with the 100
+                    tracks.</p>
+                <h2>Beautiful Soup</h2>
+                <p>Beautiful Soup is a Python library that simplifies web scraping by helping you extract data from HTML
+                    pages. It lets you navigate, search, and modify elements in a webpage’s structure with ease. When
+                    combined with libraries like requests, it allows you to download and parse web content efficiently.
+                    Beautiful Soup supports tag, attribute, and text-based searches, making it ideal for gathering
+                    specific information from websites. It’s also resilient to messy or inconsistent HTML, which is
+                    common when scraping real-world pages.</p>
+                <hr>
+                <h2>Code</h2>
+                <br>
+                <h2>Step-by-Step</h2>
+                <ol>
+                    <li>Ask the User for a date to travel to</li>
+                    <li>Use Python's Request module to fetch the relevant Billboard Hot 100 page</li>
+                    <li>Use Beautiful Soup to parse the html, extracting song names and artists from the page</li>
+                    <li>Initialise Spotify instance</li>
+                    <ol>
+                        <li>Define scope for authorisation, i.e. allowing playlist creation and modification</li>
+                        <li>Redirect user to auth page for Spotify login</li>
+                        <li>Spotify will return user's id and an access token to create a playlist on the user's
+                            account
+                        </li>
+                        <li>The earlier list of song names and artists can then be searched for on Spotify and added to
+                            a playlist
+                        </li>
+                    </ol>
+                </ol>
+                <br>
+                <h3>Code Files</h3>
+                <!-- Code Tabs -->
+                <ul class="nav nav-tabs" id="codeTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="main-tab" data-bs-toggle="tab" data-bs-target="#main"
+                                type="button" role="tab">main.py
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="spotify-tab" data-bs-toggle="tab" data-bs-target="#spotify"
+                                type="button" role="tab">spotify.py
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content p-3 bg-body-tertiary rounded-bottom" id="codeTabsContent">
+
+                    <div class="tab-pane fade show active" id="main" role="tabpanel">
+                        <pre class="rounded-3 overflow-auto">
+                            <code class="language-python">
+import requests
+from bs4 import BeautifulSoup
+from spotify import Spotify
+
+BILLBOARD_ENDPOINT = "https://www.billboard.com/charts/hot-100/"
+
+header = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:137.0) Gecko/20100101 Firefox/137.0"}
+
+date = input("What year do you want to travel to? (YYYY-MM-DD format): ")
+# date = '2025-05-14'
+response = requests.get(url= f"{BILLBOARD_ENDPOINT}{date}/", headers= header)
+response.raise_for_status()
+
+soup = BeautifulSoup(response.text, "html.parser")
+
+songs = soup.select(selector= 'li.o-chart-results-list__item > h3#title-of-a-story')
+artists = soup.select(selector= 'li.o-chart-results-list__item > h3#title-of-a-story + span.c-label')
+
+song_list = [song.text.strip() for song in songs]
+artist_list = [artist.text.strip().replace('Featuring', '') for artist in artists]
+
+song_dict = dict(zip(artist_list, song_list))
+# print(song_dict)
+
+spotify = Spotify()
+
+redirect = input("Paste URL here: ")
+code = redirect.split('code=')[1]
+
+spotify.get_bearer(code)
+spotify.get_user_id()
+playlist_name = input("What would you like to call your playlist? ")
+spotify.create_playlist(playlist_name)
+# artist, song = input("What song would you like to add to the playlist? (artist, song)? ").split(', ')
+# print(artist)
+# print(song)
+
+for artist, song in song_dict.items():
+    spotify.get_song(artist, song)
+                            </code>
+                        </pre>
+                    </div>
+
+                    <div class="tab-pane fade" id="spotify" role="tabpanel">
+                        <pre class="rounded-3 overflow-auto">
+                            <code class="language-python">
+import urllib.parse
+import requests
+import os
+
+class Spotify:
+    def __init__(self):
+        self.CLIENT_ID = os.environ.get('CLIENT_ID')
+        self.CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+        self.REDIRECT_URI = 'https://www.example.com/'
+        self.code= ''
+        self.access_token = ''
+        self.refresh_token = ''
+        self.user_id = ''
+        self.playlist_id = ''
+        self.authorize()
+
+
+    def authorize(self):
+        scopes = 'playlist-modify-public playlist-modify-private user-read-private user-read-email'  # Add more scopes as needed
+        auth_url = 'https://accounts.spotify.com/authorize'
+        params = {
+            "client_id": self.CLIENT_ID,
+            "response_type": "code",
+            "redirect_uri": self.REDIRECT_URI,
+            "scope": scopes
+        }
+
+        url = f"{auth_url}?{urllib.parse.urlencode(params)}"
+        print("Visit this URL to authorize the app:", url)
+
+
+    def get_bearer(self, code):
+
+        with open("code.txt", 'w') as code_file:
+            code_file.write(code)
+
+        token_url = 'https://accounts.spotify.com/api/token'
+        data = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': self.REDIRECT_URI,
+            'client_id': self.CLIENT_ID,
+            'client_secret': self.CLIENT_SECRET
+        }
+
+        response = requests.post(token_url, data=data)
+        tokens = response.json()
+
+        self.access_token = tokens.get("access_token")
+        self.refresh_token = tokens.get("refresh_token")  # Save this for future use
+        expires_in = tokens.get("expires_in")  # in seconds
+
+        print("Access Token:", self.access_token)
+        print("Refresh Token:", self.refresh_token)
+
+
+    def refresh_access_token(self):
+        token_url = 'https://accounts.spotify.com/api/token'
+        data = {
+            'grant_type': 'refresh_token',
+            'refresh_token': self.refresh_token,
+            'client_id': self.CLIENT_ID,
+            'client_secret': self.CLIENT_SECRET
+        }
+
+        response = requests.post(token_url, data=data)
+        tokens = response.json()
+
+        if "access_token" in tokens:
+            self.access_token = tokens["access_token"]
+        else:
+            raise Exception(f"Failed to refresh token: {tokens}")
+
+
+    def get_user_id(self):
+        header = {
+            'Authorization': f"Bearer {self.access_token}",
+        }
+        response = requests.get(url= "https://api.spotify.com/v1/me", headers= header)
+        print(response.json())
+
+        self.user_id = response.json()['id']
+
+
+    def create_playlist(self, name):
+        header = {
+            'Authorization': f"Bearer {self.access_token}",
+            'Content-Type': 'application/json',
+        }
+
+        body = {
+            "name": name
+        }
+
+        response = requests.post(url= f"https://api.spotify.com/v1/users/{self.user_id}/playlists", headers= header, json= body)
+        print(response.json())
+        self.playlist_id = response.json()['id']
+
+    def get_song(self, artist, song):
+        endpoint = 'https://api.spotify.com/v1/search'
+
+        header = {
+            'Authorization': f"Bearer {self.access_token}",
+        }
+
+        query = f'artist:{artist} track:{song} '
+
+        params = {
+            'q': query,
+            'type': 'track',
+            'limit': 1,
+            # 'market': 'GB'
+        }
+
+        response = requests.get(url= f"{endpoint}", params= params, headers= header)
+        print(response.json())
+        try:
+            uri = response.json()['tracks']['items'][0]['uri']
+        except IndexError:
+            print("Index Error")
+        else:
+            self.add_to_playlist(uri)
+
+
+    def add_to_playlist(self, uri):
+        header = {
+            'Authorization': f"Bearer {self.access_token}",
+            'Content-Type': 'application/json',
+        }
+
+        body = {
+            "uris": [uri]
+        }
+
+        response = requests.post(url=f"https://api.spotify.com/v1/playlists/{self.playlist_id}/tracks", json=body, headers= header)
+        print(response.text)
+                            </code>
+                        </pre>
+                    </div>
+                </div>
             </article>
         </div>
+        <!--        <div class="col-md-4">-->
+        <!--            <div class="position-sticky" style="top: 2rem;">-->
+        <!--                <div class="rounded">-->
+        <!--                    <img src="/images/Spotify.png"-->
+        <!--                         class="img-fluid  rounded-4 mb-5"-->
+        <!--                         alt="Snake Game image" width="400" height="400">-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
         <div class="col-md-4">
             <div class="position-sticky" style="top: 2rem;">
-                <div class="bg-body-tertiary rounded">
-                    <img src="/images/Spotify.png"
-                         class="img-fluid  rounded-4 mb-5"
-                         alt="Snake Game image" width="400" height="400">
+                <div class="rounded text-center">
+
+                    <img id="manualCycler"
+                         src="/images/Spotify.png"
+                         class="img-fluid rounded-4 mb-3"
+                         alt="Project image"
+                         width="400" height="400"
+                         style="object-fit: cover; width: 400px; height: 400px;">
+
+                    <div>
+                        <button class="btn btn-dark btn-sm rounded-circle me-2" onclick="prevImage()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-dark btn-sm rounded-circle" onclick="nextImage()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -76,7 +333,7 @@
 
 
 <!-- Footer -->
-<div class="container">
+<div class="container-fluid px-5">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2 mt-auto">
         <div class="col-md-4 d-flex align-items-center">
             <span class="mb-3 mb-md-0 text-body-secondary">© Jacques Massey 2025</span>
@@ -106,8 +363,42 @@
     </footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
+<script>
+    // Array of image URLs
+    const images = [
+      '/images/Spotify.png',
+      '/images/Billboard.jpg',
+      '/images/Playlist.jpg'
+    ];
+
+    // Track which image is currently showing
+    let index = 0;
+
+    // Grab the <img> element
+    const img = document.getElementById('manualCycler');
+
+    // Helper to show the image at the current index
+    function showImage(i) {
+      img.src = images[i];
+    }
+
+    // Next / Previous controls
+    function nextImage() {
+      index = (index + 1) % images.length;
+      showImage(index);
+    }
+
+    function prevImage() {
+      index = (index - 1 + images.length) % images.length;
+      showImage(index);
+    }
+</script>
 </body>
 </html>
