@@ -6,6 +6,9 @@
     <title>Web Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         html, body {
           height: 100%;
@@ -25,7 +28,7 @@
 
 
 <!-- Navbar -->
-<div class="container">
+<div class="container-fluid px-5">
     <header class="p-3 mb-3 border-bottom">
         <div class="container d-flex flex-wrap align-items-center">
             <h3 class="me-auto"><a href="/" class="nav-link link-body-emphasis ">Jacques Massey</a></h3>
@@ -38,45 +41,188 @@
 
 
 <!-- Content -->
-<main class="container">
+<main class="container-fluid px-5">
     <div class="px-4 pt-2 my-4 text-center">
-        <h1 class="display-4 fw-bold text-body-emphasis">Predicting House Prices</h1>
-        <!--        <div class="col-lg-6 mx-auto"><p class="lead mb-4">The classic arcade game, brought to life with the Python's-->
-        <!--            <i>Turtle</i> library.</p>-->
-        <!--        </div>-->
-        <!--        <div class="overflow-hidden" style="max-height: 40vh;">-->
-        <!--            <div class="container px-5">-->
-        <!--                <img src="/images/SnakeGame.png" class="img-fluid border rounded-3 mb-4"-->
-        <!--                     alt="Example image" width="320" height="320" loading="lazy">-->
-        <!--            </div>-->
-        <!--        </div>-->
+        <h1 class="display-4 fw-bold text-body-emphasis">Predicting House Prices in 1970s Boston</h1>
     </div>
-
+    <img
+            src="/images/Boston.jpeg"
+            class="img-fluid border rounded-4 shadow-lg mb-5 mx-auto d-block"
+            alt="Home image"
+            style="max-width: 100%; height: auto; width: min(60vw, 800px);"
+    >
     <div class="row g-5">
-        <div class="col-md-8">
+        <div>
             <article class="blog-post"><h2 class="display-5 link-body-emphasis mb-1">Using Linear Regression to Predict
                 House Prices</h2>
-                <p>As above.</p>
+                <p>Exploring multivariable regression to model and predict valuations using multiple data inputs.
+                    Demonstrating how statistical analysis and machine learning techniques can be applied to estimate
+                    real-world values with accuracy.</p>
                 <hr>
-                <h2>Data Science</h2>
-                <p>Text about the Data Science.</p>
-            </article>
-        </div>
-        <div class="col-md-4">
-            <div class="position-sticky" style="top: 2rem;">
-                <div class="bg-body-tertiary rounded">
-                    <img src="/images/BostonHouse.png"
-                         class="img-fluid  rounded-4 mb-5"
-                         alt="Snake Game image" width="400" height="400">
+                <h2>The Data</h2>
+                <p>The data for this project consists of records describing a suburb or town in Boston, each record has
+                    values for:</p>
+                <ul>
+                    <li>CRIM: Per capita crime rate per town</li>
+                    <li>ZN: Proportion of residential land zoned for lots over 25,000sq.ft.</li>
+                    <li>INDUS: Proportion of non-retail business acres per town</li>
+                    <li>CHAS: Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)</li>
+                    <li>NOX: Nitric oxides concentration (parts per 10 million)</li>
+                    <li>RM: Average number of rooms per dwelling</li>
+                    <li>AGE: Proportion of owner-occupied units built prior to 1940</li>
+                    <li>DIS: Weighted distances to ﬁve Boston employment centers</li>
+                    <li>RAD: Index of accessibility to radial highways</li>
+                    <li>TAX: Full-value property-tax rate per $10,000</li>
+                    <li>PTRATIO: Pupil-teacher ratio by town</li>
+                    <li>B: 1000(Bk−0.63)^2 where Bk is the proportion of black people by town</li>
+                    <li>LSTAT: % lower status of the population</li>
+                </ul>
+                <p>The data comes from the Boston Standard Metropolitan Statistical Area (SMSA) in 1970.</p>
+                <br>
+                <h4>Preliminary Data Exploration</h4>
+                <p>The first step of working with a data set such as this, is some basic data exploration and cleaning.
+                    Looking at the column names, as well as checking for NaN values and duplicates - removing such
+                    values where appropriate.</p>
+                <p>The following visualisations were created with Seaborn. You can see a Kernel Density Estimate (KDE)
+                    curve overlaid on each of the histograms.</p>
+                <br>
+                <div class="rounded text-center">
+
+                    <img id="manualCycler"
+                         src="/images/Housing_avg_price.png"
+                         class="img-fluid rounded-4 mb-3"
+                         alt="Project image"
+                         width="800"
+                         style="object-fit: cover; width: 800px">
+
+                    <div>
+                        <button class="btn btn-dark btn-sm rounded-circle me-2" onclick="prevImage()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-dark btn-sm rounded-circle" onclick="nextImage()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+
                 </div>
-            </div>
+                <hr>
+
+                <h4>Predicting House Prices</h4>
+                <p>In order to train a model which can predict house prices for us, we need to split our data into
+                    testing and training sets, each with the 'features': those metrics by which we get the
+                    'target' value. In this case the target value is the price, so the features will be all over values,
+                    i.e. CRIM, RM, TAX, etc.</p>
+                <p>I'm using sklearn for this part of the project, namely the <i>test_train_split()</i> function.</p>
+                <img src="/images/Housing_test_train.png"
+                     class="img-fluid border rounded-3 mb-3"
+                     style="max-width: 60%; height: auto; width: min(50vw, 500px);">
+                <br>
+                <br>
+                <h4>Multivariable Regression</h4>
+                <p class="text-center"><i>PRICE = &#1012;<sub>0</sub> + &#1012;<sub>1</sub>RM +
+                    &#1012;<sub>2</sub>NOX + &#1012;<sub>3</sub>DIS + &#1012;<sub>4</sub>CHAS...
+                    + &#1012;<sub>13</sub>LSTAT</i></p>
+                <br>
+                <h5>Running the First Regression</h5>
+                <img src="/images/Housing_regression.png"
+                     class="img-fluid border rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(50vw, 500px);">
+                <p>After running regression on the training dataset we get an R-squared value of 0.75. What does that
+                    actually mean? R-squared is the fraction by which the variance of the errors is less than the
+                    variance of the dependent variable.</p>
+                <h5>Evaluating the Coefficients of the Model</h5>
+                <img src="/images/Housing_reg_coeffs.png"
+                     class="img-fluid border rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(50vw, 600px);">
+                <p>We can do a sanity check here, to see if the coefficients are what we might expect. Those
+                    coefficients with negative values would be indicative of an area with cheaper housing: higher
+                    crime-rate, more pollution in the air, a higher pupil-to-teacher ratio in schools. From looking, it
+                    appears that our coefficients are what we might expect at this point.</p>
+                <p> One thing we can see from these coefficients, and the equation we have above, is that an extra room
+                    in a house in 1970s Boston would add about $3,100 to the value of the house!</p>
+                <h5>Residuals</h5>
+                <p>Another means by which we might evaluate our regression is residuals - the difference between the
+                    model's predictions (&ycirc;<sub>i</sub>) and the true values (y<sub>i</sub>).</p>
+                <div class="row">
+                    <img src="/images/Housing_predict_actual.png"
+                         class="img-fluid rounded-3 mb-3"
+                         style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                    <img src="/images/Housing_residuals.png"
+                         class="img-fluid rounded-3 mb-3"
+                         style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                </div>
+                <p>You can see on the first graph, of predicted vs actual prices (where predicted prices are represented
+                    by the light blue line) that the predictions are pretty good. Where the accuracy of the predictions
+                    seems to drop off is at the more expensive end of the scale. Perhaps we need to make some
+                    adjustments...</p>
+                <p>The second graph shows us the residuals from our model. It looks a bit random, but that's what we
+                    want. If our errors had a pattern, it would suggest systematic bias.</p>
+                <p>When looking at the skew of the residuals, we ideally want to see a normal distribution, a skewness
+                    and mean of 0. A skewness of 0 means the distribution is symmetrical, not biased in either
+                    direction. In our case we have a result of 1.46, and perhaps we could transform our data to get a
+                    better result.</p>
+                <img src="/images/Housing_residuals_skew.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                <p>If we plot the log of the prices on a histogram, we get a skew of -0.33, or about a third of the skew
+                    for normal prices.</p>
+                <img src="/images/Housing_log_skew.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                <p>Let's try another regression, this time using the log of the prices.</p>
+                <p class="text-center"><i>log(PRICE) = &#1012;<sub>0</sub> + &#1012;<sub>1</sub>RM +
+                    &#1012;<sub>2</sub>NOX + &#1012;<sub>3</sub>DIS + &#1012;<sub>4</sub>CHAS...
+                    + &#1012;<sub>13</sub>LSTAT</i></p>
+                <br>
+                <img src="/images/Housing_log_regression.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                <p>An R-squared value of 0.79 is a slight improvement over the earlier 0.75.</p>
+                <h5>Evaluating the Coefficients of the Model (log)</h5>
+                <img src="/images/Housing_reg_coeffs_log.png"
+                     class="img-fluid border rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(50vw, 600px);">
+                <p>The signs of the values are as before, those metrics which you might expect to reduce the value of a
+                    property have not changed.</p>
+                <div class="row">
+                    <img src="/images/Housing_predict_actual_log.png"
+                         class="img-fluid rounded-3 mb-3"
+                         style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                    <img src="/images/Housing_residuals_log.png"
+                         class="img-fluid rounded-3 mb-3"
+                         style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                </div>
+                <img src="/images/Housing_orig_res_skew.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                <img src="/images/Housing_log_res_skew.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(40vw, 500px);">
+                <p>We've made a big improvement on the skew of our model, combined with the R-squared improvement, it
+                    seems using a logarithmic approach may give us a better model.</p>
+                <img src="/images/Housing_models_test.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(50vw, 600px);">
+                <p>With our new model and coefficients, we can start to predict house prices for given metrics.</p>
+                <p>If we average all of the metrics we measure a property's value by in our dataset, we can make a
+                    prediction for the price of an average property.</p>
+                <img src="/images/Housing_avg_metrics.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(50vw, 600px);">
+                <img src="/images/Housing_avg_prediction.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(60vw, 700px);">
+                <img src="/images/Housing_prediction.png"
+                     class="img-fluid rounded-3 mb-3"
+                     style="max-width: 80%; height: auto; width: min(60vw, 700px);">
+            </article>
         </div>
     </div>
 </main>
 
 
 <!-- Footer -->
-<div class="container">
+<div class="container-fluid px-5">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-2 my-2 mt-auto">
         <div class="col-md-4 d-flex align-items-center">
             <span class="mb-3 mb-md-0 text-body-secondary">© Jacques Massey 2025</span>
@@ -86,7 +232,7 @@
                 <a class="text-body-secondary" href="https://www.goodreads.com/user/show/99919158-jacques"
                    aria-label="Goodreads">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                         class="bi bi-instagram" viewBox="0 0 16 16">
+                         class="bi" viewBox="0 0 16 16">
                         <path d="M3.4250999999999996 12.512599999999999h0.08575833333333333c0.3889833333333333 0 0.7810291666666667 0 1.1700125 0.0030624999999999997 0.04900833333333333 0 0.09494999999999999 -0.012249999999999999 0.1102625 0.06432083333333333 0.2174625 1.0689374999999999 0.9188583333333333 1.6723208333333333 1.9265374999999998 1.9571666666666667 0.8239125 0.23277499999999998 1.6570083333333332 0.23890416666666664 2.490104166666667 0.05512916666666666 1.0352458333333332 -0.22665000000000002 1.7151999999999998 -0.8667875 2.082745833333333 -1.8499624999999997 0.24502916666666666 -0.6585166666666666 0.327725 -1.3415333333333335 0.3369125 -2.0368041666666663 0.0030624999999999997 -0.1776458333333333 0.009191666666666666 -1.4395416666666665 -0.006124999999999999 -1.6171875l-0.027566666666666663 -0.0091875c-0.024499999999999997 0.045941666666666665 -0.052066666666666664 0.08882083333333332 -0.07657083333333332 0.1347625 -0.6768916666666667 1.3200958333333332 -1.8775291666666665 2.0643666666666665 -3.2282499999999996 2.1164375 -3.154745833333333 0.1225125 -5.188483333333333 -1.7458291666666668 -5.268116666666666 -5.396758333333333 -0.015316666666666666 -0.7258958333333334 0.05512916666666666 -1.4364791666666665 0.25421666666666665 -2.1348125C3.9059708333333334 1.6210749999999998 5.5599125 0.1784708333333333 7.988758333333333 0.16009166666666666c1.8775333333333333 -0.012249999999999999 3.1087999999999996 1.1853291666666665 3.5590416666666664 2.1531916666666664 0.0153125 0.03369166666666666 0.03981666666666667 0.07044583333333333 0.07350833333333333 0.05819166666666667V0.48475416666666665h1.3568458333333333c0 8.585191666666667 0.0030624999999999997 10.174816666666667 0.0030624999999999997 10.174816666666667 -0.0030624999999999997 2.404345833333333 -0.8177833333333333 4.401329166666667 -3.1547416666666668 4.967958333333333 -2.1286875 0.5176208333333333 -4.8699458333333325 0.14701666666666666 -6.0032041666666665 -1.751958333333333 -0.24502916666666666 -0.4134833333333333 -0.3614166666666666 -0.8667875 -0.39817083333333336 -1.3629708333333332ZM7.906062499999999 1.2780375c-1.6079999999999999 -0.015316666666666666 -3.3232 1.2465833333333332 -3.5222874999999996 4.098104166666666 -0.12557916666666666 1.8070833333333332 0.4533041666666667 3.7428125 2.1899416666666665 4.551408333333333 0.8453499999999999 0.3951083333333333 2.2757041666666664 0.459425 3.3170791666666664 -0.2664708333333333 1.4579166666666667 -1.0168666666666666 1.920408333333333 -2.970970833333333 1.6784458333333332 -4.716799999999999 -0.2971 -2.1776916666666666 -1.464045833333333 -3.6754333333333333 -3.6631791666666667 -3.6662416666666666Z"
                               fill="#000000" stroke-width="0.0417"></path>
                     </svg>
@@ -96,7 +242,7 @@
                 <a class="text-body-secondary" href="https://github.com/JacquesM13"
                    aria-label="GitHub">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                         class="bi bi-instagram" viewBox="0 0 16 16">
+                         class="bi" viewBox="0 0 16 16">
                         <path d="M7.999933333333333 0.35346666666666665c-1.8616000000000001 0.00006666666666666667 -3.662466666666666 0.6626 -5.080266666666667 1.8689333333333331C1.5017999999999998 3.4287333333333327 0.5594666666666666 5.100266666666666 0.26126666666666665 6.937866666666666c-0.29819999999999997 1.8375333333333332 0.0672 3.7212666666666667 1.0308 5.3141333333333325 0.9635333333333334 1.5927333333333333 2.462466666666667 2.790733333333333 4.228533333333333 3.3795333333333333 0.39199999999999996 0.0686 0.5389999999999999 -0.1666 0.5389999999999999 -0.37239999999999995 0 -0.18619999999999998 -0.0098 -0.8036 -0.0098 -1.4602 -1.9697999999999998 0.36260000000000003 -2.4794 -0.4801333333333333 -2.6361999999999997 -0.9211333333333332 -0.174 -0.4288666666666666 -0.4498 -0.8089333333333333 -0.8036 -1.1074 -0.2744 -0.147 -0.6664 -0.5095999999999999 -0.0098 -0.5194 0.2507333333333333 0.027200000000000002 0.4911333333333333 0.11446666666666666 0.7010000000000001 0.2543333333333333 0.2098 0.13986666666666664 0.3828666666666667 0.3283333333333333 0.5044 0.5492666666666666 0.10719999999999999 0.1926 0.25139999999999996 0.36219999999999997 0.4242666666666666 0.499 0.17286666666666664 0.13679999999999998 0.37106666666666666 0.2382 0.5831999999999999 0.29819999999999997 0.2121333333333333 0.060066666666666664 0.434 0.07773333333333332 0.6529333333333334 0.05193333333333333s0.43066666666666664 -0.09453333333333333 0.6229333333333333 -0.2023333333333333c0.03393333333333333 -0.39859999999999995 0.2116 -0.7712666666666667 0.4998666666666667 -1.0486 -1.7444 -0.19599999999999998 -3.5671999999999997 -0.8722 -3.5671999999999997 -3.8709999999999996 -0.011 -0.7791333333333333 0.27646666666666664 -1.533 0.8036 -2.106933333333333 -0.23966666666666664 -0.6772 -0.21166666666666667 -1.4203999999999999 0.0784 -2.0776 0 0 0.6565333333333333 -0.20579999999999998 2.1559999999999997 0.8036 1.2828 -0.3528 2.6370666666666667 -0.3528 3.9199333333333333 0 1.4993999999999998 -1.0191999999999999 2.1559999999999997 -0.8036 2.1559999999999997 -0.8036 0.29006666666666664 0.6572 0.3181333333333333 1.4003999999999999 0.0784 2.0776 0.5286 0.5729333333333333 0.8164666666666666 1.3275333333333332 0.8036 2.106933333333333 0 3.0086 -1.8325999999999998 3.675 -3.577 3.8709999999999996 0.18706666666666666 0.1896 0.3311333333333333 0.41733333333333333 0.42246666666666666 0.6675333333333333 0.09133333333333334 0.2503333333333333 0.1277333333333333 0.5173333333333333 0.10673333333333332 0.7828666666666666 0 1.0486666666666666 -0.0098 1.8913333333333333 -0.0098 2.1559333333333335 0 0.20579999999999998 0.147 0.4508 0.5389999999999999 0.37239999999999995 1.7629333333333332 -0.5935333333333332 3.2575333333333334 -1.7943333333333333 4.217 -3.3879333333333332 0.9595333333333333 -1.5936666666666666 1.3214 -3.476466666666666 1.0211333333333332 -5.312266666666666 -0.3002666666666667 -1.8357333333333332 -1.2431333333333332 -3.5050666666666666 -2.6604 -4.709933333333333C11.659466666666667 1.0164666666666666 9.860133333333334 0.3544666666666666 7.999933333333333 0.35346666666666665Z"
                               fill="#000000" stroke-width="0.6667"></path>
                     </svg>
@@ -109,5 +255,35 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+<script>
+    // Array of image URLs
+    const images = [
+      '/images/Housing_avg_price.png',
+      '/images/Housing_dist.png',
+      '/images/Housing_rm.png'
+    ];
+
+    // Track which image is currently showing
+    let index = 0;
+
+    // Grab the <img> element
+    const img = document.getElementById('manualCycler');
+
+    // Helper to show the image at the current index
+    function showImage(i) {
+      img.src = images[i];
+    }
+
+    // Next / Previous controls
+    function nextImage() {
+      index = (index + 1) % images.length;
+      showImage(index);
+    }
+
+    function prevImage() {
+      index = (index - 1 + images.length) % images.length;
+      showImage(index);
+    }
+</script>
 </body>
 </html>
