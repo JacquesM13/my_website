@@ -52,6 +52,27 @@
                 <p>I found <a href='https://www.geeksforgeeks.org/dsa/introduction-to-binary-tree/'>this</a> to be a great resource.</p>
             </article>
         </div>
+        <pre class="rounded-3 overflow-auto">
+            <code class="language-python">
+# Node structure
+class Node:
+    def __init__(self, d):
+        self.data = d
+        self.left = None
+        self.right = None
+
+# Initialize and allocate memory for tree nodes
+firstNode = Node(2)
+secondNode = Node(3)
+thirdNode = Node(4)
+fourthNode = Node(5)
+
+# Connect binary tree nodes
+firstNode.left = secondNode
+firstNode.right = thirdNode
+secondNode.left = fourthNode
+            </code>
+        </pre>
     </div>
 </main>
 
